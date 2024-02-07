@@ -1,5 +1,13 @@
 # vulkan_example
-## vulkan example
+## Requirements
+### glfw
+```sh
+apt install libglfw3-dev
+```
+### vulkan
+```sh
+apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools
+```
 
 ## Usage
 ```sh
