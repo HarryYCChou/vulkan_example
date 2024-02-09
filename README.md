@@ -1,4 +1,6 @@
 # vulkan_example
+This is an example of vulkan + glfw
+
 ## Requirements
 ### glfw
 ```sh
