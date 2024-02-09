@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.12)
 project(VulkanExample LANGUAGES CXX VERSION 0.0.1)
 
 # main source code
-set(SOURCE_MAIN src/vulkan_example/main.cc)
+set(SOURCE_MAIN src/vulkan_example/main.cc
+                src/app/app_hello.cc
+)
 
 # find the required libraries
 find_package(glfw3 REQUIRED)
