@@ -17,6 +17,16 @@ using std::endl;
 using std::cerr;
 using std::vector;
 
+// validation layer
+const vector<const char*> validation_layers = {
+  "VK_LAYER_KHRONOS_validation"
+};
+#ifdef NDEBUG
+  const bool enable_validation_layers = false;
+#else
+  const bool enable_validation_layers = true;
+#endif
+
 class AppHello {
  public:
   // constructor
@@ -35,15 +45,6 @@ class AppHello {
   VkInstance instance;
   VkDebugUtilsMessengerEXT debugMessenger;
   
-  // validation layer
-  const std::vector<const char*> validation_layers = {
-    "VK_LAYER_KHRONOS_validation"
-  };
-#ifdef NDEBUG
-  const bool enable_validation_layers = false;
-#else
-  const bool enable_validation_layers = true;
-#endif
 
   // functions
   void init_window();
@@ -55,8 +56,8 @@ class AppHello {
   bool check_validation_layer_support();
   void setupDebugMessenger();
   vector<const char*> get_required_extensions();
-  VkResult CreateDebugUtilsMessengerEXT(VkInstance, const VkDebugUtilsMessengerCreateInfoEXT*, const VkAllocationCallbacks*, VkDebugUtilsMessengerEXT*);
-  void DestroyDebugUtilsMessengerEXT(VkInstance, VkDebugUtilsMessengerEXT, const VkAllocationCallbacks*);
+  //VkResult CreateDebugUtilsMessengerEXT(VkInstance, const VkDebugUtilsMessengerCreateInfoEXT*, const VkAllocationCallbacks*, VkDebugUtilsMessengerEXT*);
+  //void DestroyDebugUtilsMessengerEXT(VkInstance, VkDebugUtilsMessengerEXT, const VkAllocationCallbacks*);
   void setup_imgui();
   static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
     std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
