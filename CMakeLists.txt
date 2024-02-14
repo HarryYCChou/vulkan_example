@@ -15,9 +15,10 @@ add_executable(vulkan_example ${SOURCE_MAIN})
 
 # include header folder
 target_include_directories(vulkan_example PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(vulkan_example PRIVATE ${CMAKE_SOURCE_DIR}/external)
 
 # external libraries
+add_subdirectory(external)
 target_link_libraries(vulkan_example PRIVATE glfw)
 target_link_libraries(vulkan_example PRIVATE Vulkan::Vulkan)
-#add_subdirectory(external)
-#target_link_libraries(main PRIVATE external)
+target_link_libraries(vulkan_example PRIVATE libimgui)

@@ -13,7 +13,7 @@ apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools
 
 ## Usage
 ```sh
-git clone git@github.com:HarryYCChou/SDL_example.git
+git clone --recursive git@github.com:HarryYCChou/SDL_example.git
 mkdir build
 cd build
 cmake ..

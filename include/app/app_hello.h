@@ -7,6 +7,9 @@
 // external libraries
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include "imgui/imgui.h"
+#include "imgui/backends/imgui_impl_glfw.h"
+#include "imgui/backends/imgui_impl_vulkan.h"
 
 using std::cout;
 using std::endl;
@@ -34,4 +37,5 @@ class AppHello {
   void main_loop();
   void cleanup();
   void create_instance();
+  void setup_imgui();
 };
