@@ -109,7 +109,7 @@ void AppHello::create_instance() {
   VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
   if (enable_validation_layers) {
     createInfo.enabledLayerCount = static_cast<uint32_t>(validation_layers.size());
-    createInfo.ppEnabledExtensionNames = validation_layers.data();
+    createInfo.ppEnabledLayerNames = validation_layers.data();
 
     populateDebugMessengerCreateInfo(debugCreateInfo);
     createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
