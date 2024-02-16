@@ -47,6 +47,7 @@ class AppHello {
   
 
   // functions
+  // vulkan function
   void init_window();
   void init_vulkan();
   void main_loop();
@@ -56,12 +57,11 @@ class AppHello {
   bool check_validation_layer_support();
   void setupDebugMessenger();
   vector<const char*> get_required_extensions();
-  //VkResult CreateDebugUtilsMessengerEXT(VkInstance, const VkDebugUtilsMessengerCreateInfoEXT*, const VkAllocationCallbacks*, VkDebugUtilsMessengerEXT*);
-  //void DestroyDebugUtilsMessengerEXT(VkInstance, VkDebugUtilsMessengerEXT, const VkAllocationCallbacks*);
-  void setup_imgui();
   static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
     std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
 
     return VK_FALSE;
   };
+  // imgui function
+  void setup_imgui();
 };
