@@ -4,8 +4,11 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <optional>
 #include <set>
+#include <limits>
+#include <algorithm>
 
 // external libraries
 #define GLFW_INCLUDE_VULKAN
@@ -18,8 +21,11 @@ using std::cout;
 using std::endl;
 using std::cerr;
 using std::vector;
+using std::string;
 using std::optional;
 using std::set;
+using std::numeric_limits;
+using std::clamp;
 
 // validation layer
 const vector<const char*> validation_layers = {
@@ -30,6 +36,10 @@ const vector<const char*> validation_layers = {
 #else
   const bool enable_validation_layers = true;
 #endif
+// device extensions
+const std::vector<const char*> device_extensions = {
+  VK_KHR_SWAPCHAIN_EXTENSION_NAME
+};
 // queue family indices
 struct QueueFamilyIndices {
   optional<uint32_t> graphicsFamily;
@@ -38,6 +48,12 @@ struct QueueFamilyIndices {
   bool isComplete() {
     return graphicsFamily.has_value();
   }
+};
+// swap chain
+struct SwapChainSupportDetails {
+  VkSurfaceCapabilitiesKHR capabilities;
+  vector<VkSurfaceFormatKHR> formats;
+  vector<VkPresentModeKHR> presentModes;
 };
 
 class AppHello {
@@ -62,6 +78,10 @@ class AppHello {
   VkDevice device;
   VkQueue graphicsQueue;
   VkQueue presentQueue;
+  VkSwapchainKHR swapChain;
+  vector<VkImage> swapChainImages;
+  VkFormat swapChainImageFormat;
+  VkExtent2D swapChainExtent;
 
   // functions
   // vulkan function
@@ -89,6 +109,13 @@ class AppHello {
   void create_logical_device();
   // vulkan function - surface
   void create_surface();
+  // vulkan function - swapchain
+  bool check_device_extension_support(VkPhysicalDevice);
+  SwapChainSupportDetails query_swap_chain_support(VkPhysicalDevice);
+  VkSurfaceFormatKHR choose_swap_surface_format(const vector<VkSurfaceFormatKHR>&);
+  VkPresentModeKHR choose_swap_present_mode(const vector<VkPresentModeKHR>&);
+  VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR&);
+  void create_swap_chain();
   // imgui function
   void setup_imgui();
 };
