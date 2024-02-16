@@ -55,6 +55,8 @@ class AppHello {
   VkInstance instance;
   VkDebugUtilsMessengerEXT debugMessenger;
   VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+  VkDevice device;
+  VkQueue graphicsQueue;
 
   // functions
   // vulkan function
@@ -78,6 +80,8 @@ class AppHello {
   bool is_device_suitable(VkPhysicalDevice);
   // vulkan function - queue family
   QueueFamilyIndices findQueueFamilies(VkPhysicalDevice);
+  // vulkan function - logical device
+  void create_logical_device();
   // imgui function
   void setup_imgui();
 };
