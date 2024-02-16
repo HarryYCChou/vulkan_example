@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <optional>
+#include <set>
 
 // external libraries
 #define GLFW_INCLUDE_VULKAN
@@ -18,6 +19,7 @@ using std::endl;
 using std::cerr;
 using std::vector;
 using std::optional;
+using std::set;
 
 // validation layer
 const vector<const char*> validation_layers = {
@@ -30,7 +32,8 @@ const vector<const char*> validation_layers = {
 #endif
 // queue family indices
 struct QueueFamilyIndices {
-  std::optional<uint32_t> graphicsFamily;
+  optional<uint32_t> graphicsFamily;
+  optional<uint32_t> presentFamily;
 
   bool isComplete() {
     return graphicsFamily.has_value();
@@ -54,9 +57,11 @@ class AppHello {
   GLFWwindow* window;
   VkInstance instance;
   VkDebugUtilsMessengerEXT debugMessenger;
+  VkSurfaceKHR surface;
   VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
   VkDevice device;
   VkQueue graphicsQueue;
+  VkQueue presentQueue;
 
   // functions
   // vulkan function
@@ -82,6 +87,8 @@ class AppHello {
   QueueFamilyIndices findQueueFamilies(VkPhysicalDevice);
   // vulkan function - logical device
   void create_logical_device();
+  // vulkan function - surface
+  void create_surface();
   // imgui function
   void setup_imgui();
 };
