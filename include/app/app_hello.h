@@ -82,6 +82,7 @@ class AppHello {
   vector<VkImage> swapChainImages;
   VkFormat swapChainImageFormat;
   VkExtent2D swapChainExtent;
+  vector<VkImageView> swapChainImageViews;
 
   // functions
   // vulkan function
@@ -116,6 +117,8 @@ class AppHello {
   VkPresentModeKHR choose_swap_present_mode(const vector<VkPresentModeKHR>&);
   VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR&);
   void create_swap_chain();
+  // vulkan function - image views 
+  void create_image_views();
   // imgui function
   void setup_imgui();
 };
