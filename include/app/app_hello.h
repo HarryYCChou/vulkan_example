@@ -87,6 +87,7 @@ class AppHello {
   VkFormat swapChainImageFormat;
   VkExtent2D swapChainExtent;
   vector<VkImageView> swapChainImageViews;
+  VkPipelineLayout pipelineLayout;
 
   // functions
   static vector<char> readFile(const string& filename) {
