@@ -91,6 +91,8 @@ class AppHello {
   VkRenderPass renderPass;
   VkPipelineLayout pipelineLayout;
   VkPipeline graphicsPipeline;
+  VkCommandPool commandPool;
+  VkCommandBuffer commandBuffer;
 
   // functions
   static vector<char> readFile(const string& filename) {
@@ -151,6 +153,10 @@ class AppHello {
   VkShaderModule create_shader_module(const vector<char>&);
   // vulkan function - framebuffers
   void create_framebuffers();
+  // vulkan function - command buffers
+  void create_command_pool();
+  void create_command_buffer();
+  void record_command_buffer(VkCommandBuffer, uint32_t);
   // imgui function
   void setup_imgui();
 };
