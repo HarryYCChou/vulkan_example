@@ -9,6 +9,7 @@
 #include <set>
 #include <limits>
 #include <algorithm>
+#include <fstream>
 
 // external libraries
 #define GLFW_INCLUDE_VULKAN
@@ -26,6 +27,9 @@ using std::optional;
 using std::set;
 using std::numeric_limits;
 using std::clamp;
+using std::ios;
+using std::ifstream;
+using std::runtime_error;
 
 // validation layer
 const vector<const char*> validation_layers = {
@@ -85,6 +89,23 @@ class AppHello {
   vector<VkImageView> swapChainImageViews;
 
   // functions
+  static vector<char> readFile(const string& filename) {
+    ifstream file(filename, ios::ate | ios::binary);
+
+    if (!file.is_open()) {
+      throw runtime_error("failed to open file!");
+    }
+
+    size_t fileSize = (size_t) file.tellg();
+    vector<char> buffer(fileSize);
+
+    file.seekg(0);
+    file.read(buffer.data(), fileSize);
+
+    file.close();
+
+    return buffer;
+  }
   // vulkan function
   void init_window();
   void init_vulkan();
@@ -119,6 +140,9 @@ class AppHello {
   void create_swap_chain();
   // vulkan function - image views 
   void create_image_views();
+  // vulkan function - graphic pipeline
+  void create_graphics_pipeline();
+  VkShaderModule create_shader_module(const vector<char>&);
   // imgui function
   void setup_imgui();
 };
