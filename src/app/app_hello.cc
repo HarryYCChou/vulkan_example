@@ -44,6 +44,7 @@ void AppHello::init_vulkan() {
   create_logical_device();
   create_swap_chain();
   create_image_views();
+  create_render_pass();
   create_graphics_pipeline();
 }
 
@@ -55,6 +56,8 @@ void AppHello::main_loop() {
 
 void AppHello::cleanup() {
   vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+
+  vkDestroyRenderPass(device, renderPass, nullptr);
 
   for (auto imageView : swapChainImageViews) {
     vkDestroyImageView(device, imageView, nullptr);
@@ -101,7 +104,7 @@ void AppHello::setup_imgui() {
 
 void AppHello::create_instance() {
   if (enable_validation_layers && check_validation_layer_support()) {
-    throw std::runtime_error("validation layers requested, but not available!");
+    throw runtime_error("validation layers requested, but not available!");
   }
 
   VkApplicationInfo appInfo{};
@@ -133,7 +136,7 @@ void AppHello::create_instance() {
   }
 
   if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
-    throw std::runtime_error("failed to create instance!");
+    throw runtime_error("failed to create instance!");
   }
 }
 
@@ -152,7 +155,7 @@ void AppHello::setupDebugMessenger() {
   populateDebugMessengerCreateInfo(createInfo);
 
   if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
-    throw std::runtime_error("failed to set up debug messenger!");
+    throw runtime_error("failed to set up debug messenger!");
   }
 }
 
@@ -174,7 +177,7 @@ bool AppHello::check_validation_layer_support() {
   uint32_t layerCount;
   vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
-  std::vector<VkLayerProperties> availableLayers(layerCount);
+  vector<VkLayerProperties> availableLayers(layerCount);
   vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
   for (const char* layerName : validation_layers) {
@@ -200,10 +203,10 @@ void AppHello::pick_physical_device() {
   vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
   if (deviceCount == 0) {
-    throw std::runtime_error("failed to find GPUs with Vulkan support!");
+    throw runtime_error("failed to find GPUs with Vulkan support!");
   }
 
-  std::vector<VkPhysicalDevice> devices(deviceCount);
+  vector<VkPhysicalDevice> devices(deviceCount);
   vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
   for (const auto& device : devices) {
@@ -214,7 +217,7 @@ void AppHello::pick_physical_device() {
   }
 
   if (physicalDevice == VK_NULL_HANDLE) {
-    throw std::runtime_error("failed to find a suitable GPU!");
+    throw runtime_error("failed to find a suitable GPU!");
   }  
 }
 
@@ -254,7 +257,7 @@ QueueFamilyIndices AppHello::findQueueFamilies(VkPhysicalDevice device) {
   uint32_t queueFamilyCount = 0;
   vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
 
-  std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+  vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
   vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
 
   int i = 0;
@@ -318,7 +321,7 @@ void AppHello::create_logical_device() {
   }
 
   if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
-      throw std::runtime_error("failed to create logical device!");
+      throw runtime_error("failed to create logical device!");
   }
 
   vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
@@ -327,7 +330,7 @@ void AppHello::create_logical_device() {
 
 void AppHello::create_surface() {
   if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
-    throw std::runtime_error("failed to create window surface!");
+    throw runtime_error("failed to create window surface!");
   }
 }
 
@@ -356,7 +359,7 @@ SwapChainSupportDetails AppHello::query_swap_chain_support(VkPhysicalDevice devi
 }
 
 VkSurfaceFormatKHR AppHello::choose_swap_surface_format(
-    const std::vector<VkSurfaceFormatKHR>& availableFormats) {
+    const vector<VkSurfaceFormatKHR>& availableFormats) {
   for (const auto& availableFormat : availableFormats) {
     if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB &&
         availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
@@ -439,7 +442,7 @@ void AppHello::create_swap_chain() {
   createInfo.oldSwapchain = VK_NULL_HANDLE;
 
   if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
-    throw std::runtime_error("failed to create swap chain!");
+    throw runtime_error("failed to create swap chain!");
   }
 
   vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
@@ -470,9 +473,41 @@ void AppHello::create_image_views() {
     createInfo.subresourceRange.layerCount = 1;
 
     if (vkCreateImageView(device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
-      throw std::runtime_error("failed to create image views!");
+      throw runtime_error("failed to create image views!");
     }
   } 
+}
+
+void AppHello::create_render_pass() {
+  VkAttachmentDescription colorAttachment{};
+  colorAttachment.format = swapChainImageFormat;
+  colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+  colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+  colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+  colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+  colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+  colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+  colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+  VkAttachmentReference colorAttachmentRef{};
+  colorAttachmentRef.attachment = 0;
+  colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+  VkSubpassDescription subpass{};
+  subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+  subpass.colorAttachmentCount = 1;
+  subpass.pColorAttachments = &colorAttachmentRef;
+
+  VkRenderPassCreateInfo renderPassInfo{};
+  renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+  renderPassInfo.attachmentCount = 1;
+  renderPassInfo.pAttachments = &colorAttachment;
+  renderPassInfo.subpassCount = 1;
+  renderPassInfo.pSubpasses = &subpass;
+
+  if (vkCreateRenderPass(device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
+    throw runtime_error("failed to create render pass!");
+  }
 }
 
 void AppHello::create_graphics_pipeline() {
@@ -556,7 +591,7 @@ void AppHello::create_graphics_pipeline() {
   pipelineLayoutInfo.pushConstantRangeCount = 0;
 
   if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
-    throw std::runtime_error("failed to create pipeline layout!");
+    throw runtime_error("failed to create pipeline layout!");
   }
 
 
@@ -572,7 +607,7 @@ VkShaderModule AppHello::create_shader_module(const vector<char>& code) {
 
   VkShaderModule shaderModule;
   if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
-    throw std::runtime_error("failed to create shader module!");
+    throw runtime_error("failed to create shader module!");
   }
 
   return shaderModule;

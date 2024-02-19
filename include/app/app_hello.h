@@ -87,6 +87,7 @@ class AppHello {
   VkFormat swapChainImageFormat;
   VkExtent2D swapChainExtent;
   vector<VkImageView> swapChainImageViews;
+  VkRenderPass renderPass;
   VkPipelineLayout pipelineLayout;
 
   // functions
@@ -141,6 +142,8 @@ class AppHello {
   void create_swap_chain();
   // vulkan function - image views 
   void create_image_views();
+  // vulkan function - render pass
+  void create_render_pass();
   // vulkan function - graphic pipeline
   void create_graphics_pipeline();
   VkShaderModule create_shader_module(const vector<char>&);
