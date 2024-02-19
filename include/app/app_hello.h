@@ -94,6 +94,10 @@ class AppHello {
   VkCommandPool commandPool;
   VkCommandBuffer commandBuffer;
 
+  VkSemaphore imageAvailableSemaphore;
+  VkSemaphore renderFinishedSemaphore;
+  VkFence inFlightFence;
+
   // functions
   static vector<char> readFile(const string& filename) {
     ifstream file(filename, ios::ate | ios::binary);
@@ -157,6 +161,9 @@ class AppHello {
   void create_command_pool();
   void create_command_buffer();
   void record_command_buffer(VkCommandBuffer, uint32_t);
+  // vulkan function - rendering and presentaion
+  void draw_frame();
+  void create_sync_objects();
   // imgui function
   void setup_imgui();
 };
