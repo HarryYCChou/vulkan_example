@@ -87,6 +87,7 @@ class AppHello {
   VkFormat swapChainImageFormat;
   VkExtent2D swapChainExtent;
   vector<VkImageView> swapChainImageViews;
+  vector<VkFramebuffer> swapChainFramebuffers;
   VkRenderPass renderPass;
   VkPipelineLayout pipelineLayout;
   VkPipeline graphicsPipeline;
@@ -148,6 +149,8 @@ class AppHello {
   // vulkan function - graphic pipeline
   void create_graphics_pipeline();
   VkShaderModule create_shader_module(const vector<char>&);
+  // vulkan function - framebuffers
+  void create_framebuffers();
   // imgui function
   void setup_imgui();
 };
