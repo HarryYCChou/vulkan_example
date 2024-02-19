@@ -89,6 +89,7 @@ class AppHello {
   vector<VkImageView> swapChainImageViews;
   VkRenderPass renderPass;
   VkPipelineLayout pipelineLayout;
+  VkPipeline graphicsPipeline;
 
   // functions
   static vector<char> readFile(const string& filename) {
