@@ -54,6 +54,8 @@ void AppHello::main_loop() {
 }
 
 void AppHello::cleanup() {
+  vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+
   for (auto imageView : swapChainImageViews) {
     vkDestroyImageView(device, imageView, nullptr);
   }
