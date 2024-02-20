@@ -1,4 +1,5 @@
 #include "engine/de_window.h"
+#include "engine/de_pipeline.h"
 
 namespace de {
 class Engine{
@@ -16,5 +17,6 @@ class Engine{
 
  private:
   DeWindow de_window{WIDTH, HEIGHT, "Engine"};
+  DePipeline de_pipeline{"../shaders/build/vert.spv", "../shaders/build/frag.spv"};
 };
 }

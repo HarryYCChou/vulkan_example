@@ -4,6 +4,9 @@ project(VulkanExample LANGUAGES CXX VERSION 0.0.1)
 # main source code
 set(SOURCE_MAIN src/vulkan_example/main.cc
                 src/app/app_hello.cc
+                src/engine/de_window.cc
+                src/engine/de_engine.cc
+                src/engine/de_pipeline.cc
 )
 
 # find the required libraries
