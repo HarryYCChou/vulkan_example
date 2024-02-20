@@ -1,8 +1,11 @@
 /*
  * Copyright (c) 2024 Harry Chou
  */
-
+// app
 #include "app/app_hello.h"
+// de engine
+#include "engine/de_engine.h"
+
 #include <iostream>
 #include <stdexcept>
 

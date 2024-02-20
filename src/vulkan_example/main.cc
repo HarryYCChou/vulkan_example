@@ -6,10 +6,20 @@
 
 int main() {
   // create an app
-  AppHello app;
+  //AppHello app;
+
+  //try {
+  //  app.run();
+  //} catch (const exception& e) {
+  //  cerr << e.what() << endl;
+  //  return EXIT_FAILURE;
+  //}
+
+  // create engine
+  de::Engine engine{};
 
   try {
-    app.run();
+    engine.run();
   } catch (const exception& e) {
     cerr << e.what() << endl;
     return EXIT_FAILURE;
