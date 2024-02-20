@@ -24,4 +24,10 @@ void DeWindow::InitWindow() {
 bool DeWindow::ShouldClose() {
   return glfwWindowShouldClose(window);
 }
+
+void DeWindow::CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface) {
+  if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
+    throw runtime_error("failed to create window surface");
+  }
+}
 }

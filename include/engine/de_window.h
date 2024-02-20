@@ -1,9 +1,11 @@
 #include <string>
+#include <stdexcept>
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
 using std::string;
+using std::runtime_error;
 
 namespace de {
 
@@ -17,6 +19,7 @@ class DeWindow {
   DeWindow &operator=(const DeWindow&) = delete;
 
   bool ShouldClose();
+  void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
  
  private:
   int width;
