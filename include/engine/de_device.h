@@ -1,3 +1,5 @@
+#pragma once
+
 #include "engine/de_window.h"
 
 // std lib headers

@@ -1,5 +1,6 @@
 #include "engine/de_window.h"
 #include "engine/de_pipeline.h"
+#include "engine/de_device.h"
 
 namespace de {
 class Engine{
@@ -17,6 +18,11 @@ class Engine{
 
  private:
   DeWindow de_window{WIDTH, HEIGHT, "Engine"};
-  DePipeline de_pipeline{"../shaders/build/vert.spv", "../shaders/build/frag.spv"};
+  DeDevice de_device{de_window};
+  DePipeline de_pipeline{
+      de_device,
+      "../shaders/build/vert.spv",
+      "../shaders/build/frag.spv",
+      DePipeline::DefaultPipelineConfigInfo(WIDTH, HEIGHT)};
 };
 }
