@@ -3,6 +3,10 @@
 #include "engine/de_device.h"
 #include "engine/de_swap_chain.h"
 
+#include <memory>
+
+using std::unique_ptr;
+
 namespace de {
 class Engine{
  public:
@@ -21,10 +25,13 @@ class Engine{
   DeWindow de_window{WIDTH, HEIGHT, "Engine"};
   DeDevice de_device{de_window};
   DeSwapChain de_swap_chain{de_device, de_window.get_extent()};
+  unique_ptr<DePipeline> de_pipeline;
+  /*
   DePipeline de_pipeline{
       de_device,
       "../shaders/build/vert.spv",
       "../shaders/build/frag.spv",
       DePipeline::DefaultPipelineConfigInfo(WIDTH, HEIGHT)};
+  */
 };
 }
