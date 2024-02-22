@@ -1,6 +1,7 @@
 #include "engine/de_window.h"
 #include "engine/de_pipeline.h"
 #include "engine/de_device.h"
+#include "engine/de_swap_chain.h"
 
 namespace de {
 class Engine{
@@ -19,6 +20,7 @@ class Engine{
  private:
   DeWindow de_window{WIDTH, HEIGHT, "Engine"};
   DeDevice de_device{de_window};
+  DeSwapChain de_swap_chain{de_device, de_window.get_extent()};
   DePipeline de_pipeline{
       de_device,
       "../shaders/build/vert.spv",

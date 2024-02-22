@@ -21,6 +21,10 @@ class DeWindow {
   DeWindow &operator=(const DeWindow&) = delete;
 
   bool ShouldClose();
+  VkExtent2D get_extent() {
+      return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};
+  };
+
   void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
  
  private:
