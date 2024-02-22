@@ -52,9 +52,9 @@ class DeSwapChain {
 
   // Helper functions
   VkSurfaceFormatKHR chooseSwapSurfaceFormat(
-      const std::vector<VkSurfaceFormatKHR> &availableFormats);
+      const vector<VkSurfaceFormatKHR> &availableFormats);
   VkPresentModeKHR chooseSwapPresentMode(
-      const std::vector<VkPresentModeKHR> &availablePresentModes);
+      const vector<VkPresentModeKHR> &availablePresentModes);
   VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities);
 
   VkFormat swapChainImageFormat;

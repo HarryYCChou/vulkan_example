@@ -14,6 +14,8 @@ using std::runtime_error;
 using std::max;
 using std::numeric_limits;
 using std::cout;
+using std::endl;
+using std::array;
 
 namespace de {
 
@@ -103,7 +105,7 @@ VkResult DeSwapChain::submitCommandBuffers(
   vkResetFences(device.device(), 1, &inFlightFences[currentFrame]);
   if (vkQueueSubmit(device.graphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) !=
       VK_SUCCESS) {
-    throw std::runtime_error("failed to submit draw command buffer!");
+    throw runtime_error("failed to submit draw command buffer!");
   }
 
   VkPresentInfoKHR presentInfo = {};
@@ -253,7 +255,7 @@ void DeSwapChain::createRenderPass() {
   dependency.dstAccessMask =
       VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
 
-  std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
+  array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
   VkRenderPassCreateInfo renderPassInfo = {};
   renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
   renderPassInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
@@ -271,7 +273,7 @@ void DeSwapChain::createRenderPass() {
 void DeSwapChain::createFramebuffers() {
   swapChainFramebuffers.resize(imageCount());
   for (size_t i = 0; i < imageCount(); i++) {
-    std::array<VkImageView, 2> attachments = {swapChainImageViews[i], depthImageViews[i]};
+    array<VkImageView, 2> attachments = {swapChainImageViews[i], depthImageViews[i]};
 
     VkExtent2D swapChainExtent = getSwapChainExtent();
     VkFramebufferCreateInfo framebufferInfo = {};
@@ -381,7 +383,7 @@ VkPresentModeKHR DeSwapChain::chooseSwapPresentMode(
     const vector<VkPresentModeKHR> &availablePresentModes) {
   for (const auto &availablePresentMode : availablePresentModes) {
     if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
-      cout << "Present mode: Mailbox" << std::endl;
+      cout << "Present mode: Mailbox" << endl;
       return availablePresentMode;
     }
   }
@@ -393,12 +395,12 @@ VkPresentModeKHR DeSwapChain::chooseSwapPresentMode(
   //   }
   // }
 
-  cout << "Present mode: V-Sync" << std::endl;
+  cout << "Present mode: V-Sync" << endl;
   return VK_PRESENT_MODE_FIFO_KHR;
 }
 
 VkExtent2D DeSwapChain::chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities) {
-  if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
+  if (capabilities.currentExtent.width != numeric_limits<uint32_t>::max()) {
     return capabilities.currentExtent;
   } else {
     VkExtent2D actualExtent = windowExtent;
