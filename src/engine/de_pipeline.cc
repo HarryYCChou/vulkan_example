@@ -127,6 +127,10 @@ void DePipeline::CreateShaderModule(
   }
 }
 
+void DePipeline::bind(VkCommandBuffer commandBuffer) {
+  vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline);
+}
+
 PipelineConfigInfo DePipeline::DefaultPipelineConfigInfo(
     uint32_t width,
     uint32_t height) {
@@ -200,4 +204,5 @@ PipelineConfigInfo DePipeline::DefaultPipelineConfigInfo(
 
   return configInfo;
 }
+
 }

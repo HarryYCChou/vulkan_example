@@ -48,6 +48,8 @@ class DePipeline {
       uint32_t width,
       uint32_t height);
 
+  void bind(VkCommandBuffer commandBuffer);
+
  private:
   static vector<char> ReadFile(const string& file_path);
   void CreateGraphicsPipeline(

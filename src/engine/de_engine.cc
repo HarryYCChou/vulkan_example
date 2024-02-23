@@ -14,7 +14,10 @@ Engine::~Engine() {
 void Engine::run() {
   while (!de_window.ShouldClose()) {
     glfwPollEvents();
+    DrawFrame();
   }
+
+  vkDeviceWaitIdle(de_device.device());
 }
 
 void Engine::CreatePipeline() {
@@ -43,11 +46,65 @@ void Engine::CreatePipelineLayout() {
 }
 
 void Engine::CreateCommandBuffers() {
+  command_buffers.resize(de_swap_chain.imageCount());
 
+  VkCommandBufferAllocateInfo allocInfo{};
+
+  allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+  allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+  allocInfo.commandPool = de_device.getCommandPool();
+  allocInfo.commandBufferCount = static_cast<uint32_t>(command_buffers.size());
+
+  if (vkAllocateCommandBuffers(de_device.device(), &allocInfo, command_buffers.data()) !=
+      VK_SUCCESS) {
+    throw runtime_error("failed to allocate command buffers!");
+  }
+
+  for (int i = 0; i < command_buffers.size(); i++) {
+    VkCommandBufferBeginInfo beginInfo{};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+
+    if (vkBeginCommandBuffer(command_buffers[i], &beginInfo) != VK_SUCCESS) {
+      throw runtime_error("failed to begin recording command buffer!");
+    }
+
+    VkRenderPassBeginInfo renderPassInfo{};
+    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+    renderPassInfo.renderPass = de_swap_chain.getRenderPass();
+    renderPassInfo.framebuffer = de_swap_chain.getFrameBuffer(i);
+
+    renderPassInfo.renderArea.offset = {0, 0};
+    renderPassInfo.renderArea.extent = de_swap_chain.getSwapChainExtent();
+
+    array<VkClearValue, 2> clearValues{};
+    clearValues[0].color = {0.1f, 0.1f, 0.1f, 1.0f};
+    clearValues[1].depthStencil = {1.0f, 0};
+    renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
+    renderPassInfo.pClearValues = clearValues.data();
+
+    vkCmdBeginRenderPass(command_buffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+    de_pipeline->bind(command_buffers[i]);
+    vkCmdDraw(command_buffers[i], 3, 1, 0, 0);
+
+    vkCmdEndRenderPass(command_buffers[i]);
+    if (vkEndCommandBuffer(command_buffers[i]) != VK_SUCCESS) {
+      throw runtime_error("failed to record command buffer!");
+    }
+  } 
 }
 
 void Engine::DrawFrame() {
+  uint32_t imageIndex;
+  auto result = de_swap_chain.acquireNextImage(&imageIndex);
+  if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+    throw runtime_error("failed to acquire swap chain image!");
+  }
 
+  result = de_swap_chain.submitCommandBuffers(&command_buffers[imageIndex], &imageIndex);
+  if (result != VK_SUCCESS) {
+    throw runtime_error("failed to present swap chain image!");
+  }
 }
 
 }

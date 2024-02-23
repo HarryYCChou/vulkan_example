@@ -6,10 +6,12 @@
 #include <vector>
 #include <memory>
 #include <stdexcept>
+#include <array>
 
 using std::vector;
 using std::unique_ptr;
 using std::runtime_error;
+using std::array;
 
 namespace de {
 class Engine{
