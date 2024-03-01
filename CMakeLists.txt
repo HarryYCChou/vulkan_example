@@ -9,6 +9,7 @@ set(SOURCE_MAIN src/vulkan_example/main.cc
                 src/engine/de_pipeline.cc
                 src/engine/de_device.cc
                 src/engine/de_swap_chain.cc
+                src/engine/de_model.cc
 )
 
 # find the required libraries

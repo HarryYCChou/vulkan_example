@@ -2,6 +2,7 @@
 
 namespace de {
 Engine::Engine() {
+  LoadModels();
   CreatePipelineLayout();
   CreatePipeline();
   CreateCommandBuffers();
@@ -20,6 +21,15 @@ void Engine::run() {
   vkDeviceWaitIdle(de_device.device());
 }
 
+void Engine::LoadModels() {
+  vector<DeModel::Vertex> vertices = {
+    {{0.0f, -0.5f}},
+    {{0.5f, 0.5f}},
+    {{-0.5f, 0.5f}}
+  };
+  de_model = make_unique<DeModel>(de_device, vertices);
+}
+
 void Engine::CreatePipeline() {
   auto pipelineConfig =
       DePipeline::DefaultPipelineConfigInfo(de_swap_chain.width(), de_swap_chain.height());
@@ -27,8 +37,8 @@ void Engine::CreatePipeline() {
   pipelineConfig.pipelineLayout = pipeline_layout;
   de_pipeline = std::make_unique<DePipeline>(
       de_device,
-      "../shaders/build/vert.spv",
-      "../shaders/build/frag.spv",
+      "../shaders/build/vert_2.spv",
+      "../shaders/build/frag_2.spv",
       pipelineConfig);
 }
 
@@ -85,7 +95,8 @@ void Engine::CreateCommandBuffers() {
     vkCmdBeginRenderPass(command_buffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
     de_pipeline->bind(command_buffers[i]);
-    vkCmdDraw(command_buffers[i], 3, 1, 0, 0);
+    de_model->bind(command_buffers[i]);
+    de_model->draw(command_buffers[i]);
 
     vkCmdEndRenderPass(command_buffers[i]);
     if (vkEndCommandBuffer(command_buffers[i]) != VK_SUCCESS) {

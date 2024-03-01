@@ -2,6 +2,7 @@
 #include "engine/de_pipeline.h"
 #include "engine/de_device.h"
 #include "engine/de_swap_chain.h"
+#include "engine/de_model.h"
 
 #include <vector>
 #include <memory>
@@ -10,6 +11,7 @@
 
 using std::vector;
 using std::unique_ptr;
+using std::make_unique;
 using std::runtime_error;
 using std::array;
 
@@ -30,6 +32,7 @@ class Engine{
   void run();
 
  private:
+  void LoadModels();
   void CreatePipeline();
   void CreatePipelineLayout();
   void CreateCommandBuffers();
@@ -41,5 +44,6 @@ class Engine{
   unique_ptr<DePipeline> de_pipeline;
   VkPipelineLayout pipeline_layout;
   vector<VkCommandBuffer> command_buffers;
+  unique_ptr<DeModel> de_model;
 };
 }
