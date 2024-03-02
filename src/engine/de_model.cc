@@ -9,7 +9,6 @@ DeModel::DeModel(DeDevice& device, const vector<Vertex>& vertices) : de_device{d
   CreateVertexBuffers(vertices);
 }
 
-
 DeModel::~DeModel() {
   vkDestroyBuffer(de_device.device(), vertex_buffer, nullptr);
   vkFreeMemory(de_device.device(), vertex_buffer_memory, nullptr);
