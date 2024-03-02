@@ -23,7 +23,7 @@ class DeSwapChain {
   ~DeSwapChain();
 
   DeSwapChain(const DeSwapChain &) = delete;
-  void operator=(const DeSwapChain &) = delete;
+  DeSwapChain& operator=(const DeSwapChain &) = delete;
 
   VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
   VkRenderPass getRenderPass() { return renderPass; }

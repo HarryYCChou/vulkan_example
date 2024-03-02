@@ -35,9 +35,7 @@ class DeDevice {
 
   // Not copyable or movable
   DeDevice(const DeDevice &) = delete;
-  void operator=(const DeDevice &) = delete;
-  DeDevice(DeDevice &&) = delete;
-  DeDevice &operator=(DeDevice &&) = delete;
+  DeDevice& operator=(const DeDevice &) = delete;
 
   VkCommandPool getCommandPool() { return commandPool; }
   VkDevice device() { return device_; }
