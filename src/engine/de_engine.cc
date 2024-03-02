@@ -23,9 +23,9 @@ void Engine::run() {
 
 void Engine::LoadModels() {
   vector<DeModel::Vertex> vertices = {
-    {{0.0f, -0.5f}},
-    {{0.5f, 0.5f}},
-    {{-0.5f, 0.5f}}
+    {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, 0.5f},  {0.0f, 1.0f, 0.0f}},
+    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
   };
   de_model = make_unique<DeModel>(de_device, vertices);
 }

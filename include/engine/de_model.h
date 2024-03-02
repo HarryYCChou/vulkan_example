@@ -16,6 +16,7 @@ class DeModel {
  public:
   struct Vertex {
     glm::vec2 position;
+    glm::vec3 color;
 
     static vector<VkVertexInputBindingDescription> GetBindingDescriptions();
     static vector<VkVertexInputAttributeDescription> GetAttributeDescriptions();
