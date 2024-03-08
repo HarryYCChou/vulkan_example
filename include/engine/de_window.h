@@ -24,15 +24,20 @@ class DeWindow {
   VkExtent2D get_extent() {
       return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};
   };
+  bool WasWindowResized() { return frame_buffer_resized; }
+  void ResetWindowResizedFlag() { frame_buffer_resized = false; } 
 
   void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
  
  private:
   int width;
   int height;
+  bool frame_buffer_resized = false;
+
   string window_name;
   GLFWwindow *window;
 
   void InitWindow();
+  static void FrameBufferResizeCallback(GLFWwindow* window, int width, int height);
 };
 }

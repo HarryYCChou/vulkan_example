@@ -37,10 +37,12 @@ class Engine{
   void CreatePipelineLayout();
   void CreateCommandBuffers();
   void DrawFrame();
+  void RecreateSwapChain();
+  void RecordCommandBuffer(int image_index);
 
   DeWindow de_window{WIDTH, HEIGHT, "Engine"};
   DeDevice de_device{de_window};
-  DeSwapChain de_swap_chain{de_device, de_window.get_extent()};
+  unique_ptr<DeSwapChain> de_swap_chain;
   unique_ptr<DePipeline> de_pipeline;
   VkPipelineLayout pipeline_layout;
   vector<VkCommandBuffer> command_buffers;

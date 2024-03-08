@@ -17,8 +17,8 @@ void DeWindow::InitWindow() {
   glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
   window = glfwCreateWindow(width, height, window_name.c_str(), nullptr, nullptr);
-  //glfwSetWindowUserPointer(window, this);
-  //glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+  glfwSetWindowUserPointer(window, this);
+  glfwSetFramebufferSizeCallback(window, FrameBufferResizeCallback);
 }
 
 bool DeWindow::ShouldClose() {
@@ -29,5 +29,12 @@ void DeWindow::CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface) {
   if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
     throw runtime_error("failed to create window surface");
   }
+}
+
+void DeWindow::FrameBufferResizeCallback(GLFWwindow* window, int width, int height) {
+  auto de_window = reinterpret_cast<DeWindow*>(glfwGetWindowUserPointer(window));
+  de_window->frame_buffer_resized = true;
+  de_window->width = width;
+  de_window->height = height;
 }
 }
