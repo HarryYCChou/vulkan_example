@@ -32,8 +32,8 @@ void Engine::LoadModels() {
 }
 
 void Engine::CreatePipeline() {
-  auto pipelineConfig =
-      DePipeline::DefaultPipelineConfigInfo(de_swap_chain->width(), de_swap_chain->height());
+  PipelineConfigInfo pipelineConfig{};
+  DePipeline::DefaultPipelineConfigInfo(pipelineConfig);
   pipelineConfig.renderPass = de_swap_chain->getRenderPass();
   pipelineConfig.pipelineLayout = pipeline_layout;
   de_pipeline = std::make_unique<DePipeline>(
@@ -110,6 +110,17 @@ void Engine::RecordCommandBuffer(int image_index) {
   renderPassInfo.pClearValues = clearValues.data();
 
   vkCmdBeginRenderPass(command_buffers[image_index], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+  VkViewport viewport{};
+  viewport.x = 0.0f;
+  viewport.y = 0.0f;
+  viewport.width = static_cast<float>(de_swap_chain->getSwapChainExtent().width);
+  viewport.height = static_cast<float>(de_swap_chain->getSwapChainExtent().height);
+  viewport.minDepth = 0.0f;
+  viewport.maxDepth = 1.0f;
+  VkRect2D scissor{{0, 0}, de_swap_chain->getSwapChainExtent()};
+  vkCmdSetViewport(command_buffers[image_index], 0, 1, &viewport);
+  vkCmdSetScissor(command_buffers[image_index], 0, 1, &scissor);
 
   de_pipeline->bind(command_buffers[image_index]);
   de_model->bind(command_buffers[image_index]);

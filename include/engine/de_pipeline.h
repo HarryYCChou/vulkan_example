@@ -19,14 +19,14 @@ using std::endl;
 namespace de {
 
 struct PipelineConfigInfo {
-  VkViewport viewport;
-  VkRect2D scissor;
   VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
   VkPipelineRasterizationStateCreateInfo rasterizationInfo;
   VkPipelineMultisampleStateCreateInfo multisampleInfo;
   VkPipelineColorBlendAttachmentState colorBlendAttachment;
   VkPipelineColorBlendStateCreateInfo colorBlendInfo;
   VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
+  vector<VkDynamicState> dynamicStateEnables;
+  VkPipelineDynamicStateCreateInfo dynamicStateInfo;
   VkPipelineLayout pipelineLayout = nullptr;
   VkRenderPass renderPass = nullptr;
   uint32_t subpass = 0;
@@ -44,9 +44,7 @@ class DePipeline {
   DePipeline(const DePipeline&) = delete;
   DePipeline& operator=(const DePipeline&) = delete;
 
-  static PipelineConfigInfo DefaultPipelineConfigInfo(
-      uint32_t width,
-      uint32_t height);
+  static void DefaultPipelineConfigInfo(PipelineConfigInfo& configInfo);
 
   void bind(VkCommandBuffer commandBuffer);
 
