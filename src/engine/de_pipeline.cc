@@ -36,10 +36,10 @@ void DePipeline::CreateGraphicsPipeline(
     const string& frag_path,
     const PipelineConfigInfo& config_info) {
   assert(
-      config_info.pipelineLayout != nullptr &&
+      config_info.pipelineLayout != VK_NULL_HANDLE &&
       "Cannot create graphics pipeline: no pipelineLayout provided in config info");
   assert(
-      config_info.renderPass != nullptr &&
+      config_info.renderPass != VK_NULL_HANDLE &&
       "Cannot create graphics pipeline: no renderPass provided in config info");
 
   auto vert_code = ReadFile(vert_path);
